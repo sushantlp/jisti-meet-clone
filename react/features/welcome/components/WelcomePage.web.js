@@ -396,9 +396,9 @@ class WelcomePage extends AbstractWelcomePage {
    * @returns {ReactElement|null}
    */
   _renderTabs() {
-    if (isMobileBrowser()) {
-      return null;
-    }
+    // if (isMobileBrowser()) {
+    //   return null;
+    // }
 
     const { _calendarEnabled, _recentListEnabled, t } = this.props;
 
