@@ -35,6 +35,10 @@ class WelcomePage extends AbstractWelcomePage {
     _room: "",
   };
 
+  state = {
+    display: false,
+  };
+
   /**
    * Initializes a new WelcomePage instance.
    *
@@ -172,6 +176,10 @@ class WelcomePage extends AbstractWelcomePage {
    * @inheritdoc
    * @returns {ReactElement|null}
    */
+  onLogin() {
+    console.log("YES");
+  }
+
   render() {
     const { _moderatedRoomServiceUrl, t } = this.props;
     const {
@@ -187,6 +195,16 @@ class WelcomePage extends AbstractWelcomePage {
     const footerClassName = DISPLAY_WELCOME_FOOTER
       ? "with-footer"
       : "without-footer";
+
+    if (!this.state.display) {
+      return (
+        <div>
+          name : <input />
+          password : <input />
+          <buton onClick={this.onLogin}>Click here</buton>
+        </div>
+      );
+    }
 
     return (
       <div
