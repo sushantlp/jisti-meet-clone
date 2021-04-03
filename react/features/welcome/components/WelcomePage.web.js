@@ -49,6 +49,10 @@ class WelcomePage extends AbstractWelcomePage {
 
       generateRoomnames: interfaceConfig.GENERATE_ROOMNAMES_ON_WELCOME_PAGE,
       selectedTab: 0,
+      display: false,
+      username: "",
+      password: "",
+      error: false,
     };
 
     /**
@@ -172,6 +176,29 @@ class WelcomePage extends AbstractWelcomePage {
    * @inheritdoc
    * @returns {ReactElement|null}
    */
+  onLogin = () => {
+    console.log("YES");
+    if (
+      this.state.username === "admin@xelpmoc.in" &&
+      this.state.password === "123456789"
+    ) {
+      this.setState((state) => ({
+        display: true,
+      }));
+    } else {
+      this.setState((state) => ({
+        error: true,
+      }));
+    }
+  };
+
+  handleChangeUser = (event) => {
+    this.setState({ username: event.target.value });
+  };
+  handleChangePassword = (event) => {
+    this.setState({ password: event.target.value });
+  };
+
   render() {
     const { _moderatedRoomServiceUrl, t } = this.props;
     const {
@@ -187,6 +214,83 @@ class WelcomePage extends AbstractWelcomePage {
     const footerClassName = DISPLAY_WELCOME_FOOTER
       ? "with-footer"
       : "without-footer";
+
+    if (!this.state.display) {
+      return (
+        <div
+          className={`welcome ${contentClassName} ${footerClassName}`}
+          id="welcome_page"
+        >
+          <div className="welcome-watermark">
+            <Watermarks defaultJitsiLogoURL={DEFAULT_WELCOME_PAGE_LOGO_URL} />
+          </div>
+          <div className="header" style={{ height: "100vh" }}>
+            <div className="header-image" />
+            <div className="header-container">
+              <h1 className="header-text-title">
+                {t("welcomepage.headerTitle")}
+              </h1>
+              <span className="header-text-subtitle">
+                {t("welcomepage.headerSubtitle")}
+              </span>
+              <div
+                id="enter_room"
+                style={{
+                  background: "#0000003d",
+                  display: "block",
+                  width: "auto",
+                  padding: "2%",
+                  fontSize: "14px",
+                }}
+              >
+                Email :{" "}
+                <input
+                  value={this.state.username}
+                  style={{ marginLeft: "22px" }}
+                  onChange={this.handleChangeUser}
+                />
+                <br />
+                <br />
+                password :{" "}
+                <input
+                  type="password"
+                  value={this.state.password}
+                  onChange={this.handleChangePassword}
+                />
+                <br />
+                {this.state.error ? (
+                  <p style={{ color: "red" }}>Email id or password is wrong</p>
+                ) : null}
+                <br />
+                <br />
+                <buton
+                  onClick={this.onLogin}
+                  style={{
+                    background: "#4CAF50",
+                    color: "white",
+                    marginTop: "10px",
+                    padding: "10px 28px",
+                    textAlign: "center",
+                  }}
+                >
+                  Sign in
+                </buton>
+              </div>
+
+              {_moderatedRoomServiceUrl && (
+                <div id="moderated-meetings">
+                  <p>
+                    {translateToHTML(t, "welcomepage.moderatedMessage", {
+                      url: _moderatedRoomServiceUrl,
+                    })}
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    }
 
     return (
       <div
